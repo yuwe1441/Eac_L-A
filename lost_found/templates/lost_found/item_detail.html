@@ -269,19 +269,5 @@
         </div>
     </div>
 
-    {% if related_items %}
-    <div class="related-panel">
-        <h2>More {{ item.status|lower }} items</h2>
-        <div class="related-grid">
-            {% for related in related_items %}
-            <div class="related-card">
-                <h3>{{ related.title }}</h3>
-                <p>{{ related.description|truncatewords:16 }}</p>
-                <a href="{% url 'item_detail' related.id %}">View details</a>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-    {% endif %}
 </section>
 {% endblock %}

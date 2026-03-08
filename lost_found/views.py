@@ -1,7 +1,9 @@
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout as django_logout
 from django.contrib.auth.decorators import user_passes_test
 from django.db.models import Q
+from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 
@@ -138,6 +140,7 @@ def admin_login(request):
 def admin_dashboard(request):
     context = _admin_nav_context()
     context['recent_items'] = Item.objects.order_by('-date_reported')[:5]
+    context['allow_clear_data'] = settings.ALLOW_CLEAR_DATA
     return render(request, 'lost_found/admin_dashboard.html', context)
 
 
@@ -331,17 +334,56 @@ def delete_item(request, item_id):
     return _redirect_next(request, 'home')
 
 
+@user_passes_test(is_admin)
+def edit_item(request, item_id):
+    item = get_object_or_404(Item, id=item_id)
+    if request.method == 'POST':
+        item.title = request.POST.get('title', item.title)
+        item.category = request.POST.get('category', item.category)
+        item.location = request.POST.get('location', item.location)
+        item.description = request.POST.get('description', item.description)
+        item.reporter_name = request.POST.get('reporter_name', item.reporter_name)
+        item.reporter_contact = request.POST.get('reporter_contact', item.reporter_contact)
+        item.date_lost = request.POST.get('date_lost') or item.date_lost
+        item.time_lost = request.POST.get('time_lost') or item.time_lost
+        if item.status == 'Found':
+            item.is_surrendered_to_osa = bool(request.POST.get('is_surrendered_to_osa'))
+        if request.FILES.get('image'):
+            item.image = request.FILES['image']
+        item.save()
+        messages.success(request, 'Item updated successfully.')
+        back = request.POST.get('next', '')
+        if back.startswith('/'):
+            return redirect(back)
+        return redirect('found_reports_overview' if item.status == 'Found' else 'lost_reports_overview')
+    context = _admin_nav_context()
+    context['item'] = item
+    return render(request, 'lost_found/edit_item.html', context)
+
+
 def item_detail(request, item_id):
     item_queryset = Item.objects.select_related('user', 'reviewed_by') if is_admin(request.user) else _visible_items()
     item = get_object_or_404(item_queryset, id=item_id)
-    related_queryset = item_queryset if is_admin(request.user) else _visible_items()
-    related_items = related_queryset.filter(status=item.status).exclude(id=item.id)[:3]
     return render(request, 'lost_found/item_detail.html', {
         'item': item,
-        'related_items': related_items,
         'is_admin_view': is_admin(request.user),
         'back_to_url': 'found_reports_overview' if is_admin(request.user) and item.status == 'Found' else 'lost_reports_overview' if is_admin(request.user) else 'home',
     })
+
+
+@user_passes_test(is_admin)
+def clear_data(request):
+    # An admin-only endpoint for resetting reports/claims when enabled via env var.
+    if not settings.ALLOW_CLEAR_DATA:
+        raise Http404()
+
+    if request.method == 'POST':
+        Item.objects.all().delete()
+        Claim.objects.all().delete()
+        messages.success(request, 'All items and claims have been cleared from the database.')
+        return redirect('admin_dashboard')
+
+    return render(request, 'lost_found/confirm_clear_data.html')
 
 
 def about(request):

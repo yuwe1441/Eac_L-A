@@ -312,6 +312,9 @@
         <div class="admin-actions">
           <a href="#" class="hero-btn hero-btn-outline" id="report-lost-btn">Report Lost Item</a>
           <a href="#" class="hero-btn hero-btn-primary" id="admin-report-found-btn">Report Found Item</a>
+          {% if allow_clear_data %}
+            <a href="{% url 'clear_data' %}" class="hero-btn hero-btn-danger">Clear all reports &amp; claims</a>
+          {% endif %}
         </div>
       </div>
 

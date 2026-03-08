@@ -1,0 +1,15 @@
+{% extends 'lost_found/base.html' %}
+{% load static %}
+
+{% block content %}
+<section style="max-width: 640px; margin: 56px auto; padding: 0 20px;">
+  <h1>Clear all reports & claims</h1>
+  <p>This will permanently delete all lost/found items and claim requests. User accounts will not be affected.</p>
+
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="hero-btn hero-btn-danger">Yes, clear everything</button>
+    <a href="{% url 'admin_dashboard' %}" class="hero-btn hero-btn-outline" style="margin-left: 12px;">Cancel</a>
+  </form>
+</section>
+{% endblock %}

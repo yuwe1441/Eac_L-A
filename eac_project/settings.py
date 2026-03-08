@@ -15,7 +15,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-+%-fqvmz^(jo8zw5tworg
 
 
 # DEBUG should be disabled in production. Set DEBUG=1 in Railway if you need it for troubleshooting.
-DEBUG = os.environ.get('DEBUG', '0') == '1'
+# Default to True locally (so static files load correctly) but allow overriding with DEBUG=0 in production.
+DEBUG = os.environ.get('DEBUG', '1') == '1'
 
 # Allow configuring hosts via ALLOWED_HOSTS env var (comma-separated).
 # Default includes localhost plus the Railway domain used by this project.
@@ -33,6 +34,9 @@ CSRF_TRUSTED_ORIGINS = os.environ.get(
     'CSRF_TRUSTED_ORIGINS',
     'https://eacl-a-production.up.railway.app'
 ).split(',')
+
+# Enable a one-click data reset endpoint (admin only). Set this env var to 1 to enable.
+ALLOW_CLEAR_DATA = os.environ.get('ALLOW_CLEAR_DATA', '0') in {'1', 'true', 'True'}
 
 
 INSTALLED_APPS = [

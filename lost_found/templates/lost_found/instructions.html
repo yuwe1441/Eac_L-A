@@ -1,15 +1,54 @@
 {% extends 'lost_found/base.html' %}
 {% block content %}
-<section class="instructions-section" style="max-width:700px;margin:40px auto 60px auto;padding:40px 28px;background:#fff;border-radius:18px;box-shadow:0 4px 24px #a8000022;">
-  <h1 style="color:#a80000;text-align:center;font-family:'Orbitron',Arial,sans-serif;font-size:2.2rem;margin-bottom:24px;letter-spacing:1px;">How to Claim Items in OSA</h1>
-  <ol style="color:#222;font-size:1.22rem;line-height:2;max-width:600px;margin:0 auto 32px auto;font-weight:500;">
-    <li>Go to the <b>Office of Student Affairs (OSA)</b> at EAC Cavite during office hours.</li>
-    <li>Present a <b>valid school ID</b> or government-issued ID for verification.</li>
-    <li>Provide a detailed description of the lost item and any <b>proof of ownership</b> (if available).</li>
-    <li>Fill out the <b>claim form</b> provided by OSA staff.</li>
-    <li>Wait for the staff to verify your claim. If approved, <b>sign the release logbook</b>.</li>
-    <li>Receive your item and keep your <b>claim receipt</b> for future reference.</li>
-  </ol>
-  <div style="text-align:center;color:#a80000;font-weight:700;font-size:1.1rem;">For questions, contact OSA at (046) 416-4341 or visit the office directly.</div>
-</section>
+<div class="instructions-page">
+  <h1 class="instructions-page-title">How to Use EAC Lost &amp; Found</h1>
+
+  <div class="instruction-card">
+    <div class="instruction-card-header">
+      <span class="instruction-icon">📢</span>
+      <h2>Report a Lost Item</h2>
+    </div>
+    <ol class="instruction-steps">
+      <li>Click <b>"Report Lost Item"</b> on the homepage.</li>
+      <li>Fill in the item details: <b>title, category, description, location,</b> and <b>date lost</b>.</li>
+      <li>Upload a <b>photo</b> of the item if available — this helps others identify it.</li>
+      <li>Provide your <b>contact information</b> so finders can reach you.</li>
+      <li>Submit the report. An <b>admin will review and approve</b> it before it appears on the site.</li>
+      <li>Once approved, your item will show under the <b>Lost Items</b> tab.</li>
+    </ol>
+  </div>
+
+  <div class="instruction-card">
+    <div class="instruction-card-header">
+      <span class="instruction-icon">🔍</span>
+      <h2>Report a Found Item</h2>
+    </div>
+    <ol class="instruction-steps">
+      <li>Click <b>"Report Found Item"</b> on the homepage.</li>
+      <li>Describe the item: <b>title, category, description, location,</b> and <b>date found</b>.</li>
+      <li>Upload a <b>photo</b> so the owner can recognize their item.</li>
+      <li>Indicate whether the item has been <b>surrendered to OSA</b>.</li>
+      <li>Submit the report. An <b>admin will review and approve</b> it before it goes live.</li>
+      <li>Once approved, it will appear under the <b>Found Items</b> tab for others to claim.</li>
+    </ol>
+  </div>
+
+  <div class="instruction-card">
+    <div class="instruction-card-header">
+      <span class="instruction-icon">✅</span>
+      <h2>Claim an Item</h2>
+    </div>
+    <ol class="instruction-steps">
+      <li>Browse the <b>Found Items</b> tab and click <b>"Claim This Item"</b> on the matching item.</li>
+      <li>Fill out the claim form with a description of your proof of ownership.</li>
+      <li>The admin or finder will <b>review and approve</b> your claim.</li>
+      <li>If the item is <b>stored with OSA</b>, visit the <b>Office of Student Affairs</b> with a valid ID.</li>
+      <li>Present your <b>proof of ownership</b>, sign the release logbook, and collect your item.</li>
+    </ol>
+  </div>
+
+  <div class="instructions-contact">
+    For questions, contact OSA at <b>(046) 416-4341</b> or visit the office directly.
+  </div>
+</div>
 {% endblock %}

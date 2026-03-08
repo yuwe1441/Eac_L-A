@@ -1,0 +1,191 @@
+{% extends 'lost_found/base.html' %}
+{% load static %}
+{% block navbar %}
+{% include 'lost_found/admin_navbar.html' with current_nav='reports' %}
+{% endblock %}
+{% block extra_css %}
+<style>
+    .edit-shell { padding: 56px 24px 72px; }
+    .edit-card {
+        max-width: 720px;
+        margin: 0 auto;
+        background: linear-gradient(180deg, rgba(118,0,0,0.98) 0%, rgba(160,12,0,0.95) 22%, rgba(255,252,244,0.99) 22%, rgba(255,255,255,0.99) 100%);
+        border-radius: 28px;
+        border: 1px solid rgba(255,215,0,0.3);
+        box-shadow: 0 24px 68px rgba(70,0,0,0.3);
+        overflow: hidden;
+    }
+    .edit-hero {
+        padding: 28px 36px 22px;
+        border-bottom: 2px solid rgba(255,215,0,0.88);
+    }
+    .edit-hero p {
+        margin: 0 0 6px;
+        font-size: 0.84rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        color: rgba(255,236,178,0.92);
+    }
+    .edit-hero h2 {
+        margin: 0;
+        font-size: 1.8rem;
+        color: #fff;
+    }
+    .edit-body {
+        padding: 30px 36px 36px;
+        background: linear-gradient(180deg, #fffaf2 0%, #fff 100%);
+    }
+    .edit-form { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .edit-form .full-width { grid-column: 1 / -1; }
+    .edit-form label {
+        display: block;
+        font-weight: 700;
+        color: #7d1300;
+        margin-bottom: 6px;
+        font-size: 0.92rem;
+    }
+    .edit-form input[type="text"],
+    .edit-form input[type="date"],
+    .edit-form input[type="time"],
+    .edit-form select,
+    .edit-form textarea {
+        width: 100%;
+        padding: 10px 14px;
+        border-radius: 8px;
+        border: 1.5px solid #ddd;
+        font-size: 1rem;
+        font-family: inherit;
+        background: #fffbe6;
+        color: #333;
+        transition: border 0.2s;
+    }
+    .edit-form input:focus,
+    .edit-form select:focus,
+    .edit-form textarea:focus {
+        border-color: #a80000;
+        outline: none;
+    }
+    .edit-form textarea { min-height: 100px; resize: vertical; }
+    .edit-current-img {
+        display: block;
+        max-width: 200px;
+        border-radius: 10px;
+        margin-bottom: 8px;
+        border: 2px solid #eee;
+    }
+    .edit-actions {
+        grid-column: 1 / -1;
+        display: flex;
+        gap: 12px;
+        margin-top: 10px;
+    }
+    .edit-save-btn {
+        background: #a80000;
+        color: #fff;
+        border: none;
+        padding: 12px 32px;
+        border-radius: 10px;
+        font-weight: 700;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+    .edit-save-btn:hover { background: #7a0000; }
+    .edit-cancel-link {
+        display: inline-flex;
+        align-items: center;
+        padding: 12px 24px;
+        border-radius: 10px;
+        background: #f0f0f0;
+        color: #555;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 1rem;
+    }
+    .edit-cancel-link:hover { background: #e0e0e0; }
+    .osa-checkbox { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+    .osa-checkbox input { width: 18px; height: 18px; }
+    @media (max-width: 600px) {
+        .edit-form { grid-template-columns: 1fr; }
+        .edit-shell { padding: 32px 14px 48px; }
+        .edit-hero, .edit-body { padding-left: 18px; padding-right: 18px; }
+    }
+</style>
+{% endblock %}
+{% block content %}
+<section class="edit-shell">
+    <div class="edit-card">
+        <div class="edit-hero">
+            <p>Admin</p>
+            <h2>Edit {{ item.get_status_display }} Report</h2>
+        </div>
+        <div class="edit-body">
+            <form method="POST" enctype="multipart/form-data" class="edit-form">
+                {% csrf_token %}
+                {% if request.GET.next %}
+                <input type="hidden" name="next" value="{{ request.GET.next }}">
+                {% endif %}
+                <div>
+                    <label for="edit-title">Title</label>
+                    <input type="text" id="edit-title" name="title" value="{{ item.title }}" required>
+                </div>
+                <div>
+                    <label for="edit-category">Category</label>
+                    <select id="edit-category" name="category" required>
+                        <option value="Electronics" {% if item.category == 'Electronics' %}selected{% endif %}>Electronics</option>
+                        <option value="Documents" {% if item.category == 'Documents' %}selected{% endif %}>Documents</option>
+                        <option value="Personal Effects" {% if item.category == 'Personal Effects' %}selected{% endif %}>Personal Belongings</option>
+                        <option value="Others" {% if item.category == 'Others' %}selected{% endif %}>Others</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="edit-location">Location</label>
+                    <input type="text" id="edit-location" name="location" value="{{ item.location }}" required>
+                </div>
+                <div>
+                    <label for="edit-date">Date {{ item.incident_label }}</label>
+                    <input type="date" id="edit-date" name="date_lost" value="{{ item.date_lost|date:'Y-m-d' }}">
+                </div>
+                <div>
+                    <label for="edit-time">Time</label>
+                    <input type="time" id="edit-time" name="time_lost" value="{{ item.time_lost|time:'H:i' }}">
+                </div>
+                <div>
+                    <label for="edit-reporter-name">Reporter Name</label>
+                    <input type="text" id="edit-reporter-name" name="reporter_name" value="{{ item.reporter_name }}">
+                </div>
+                <div>
+                    <label for="edit-reporter-contact">Reporter Contact</label>
+                    <input type="text" id="edit-reporter-contact" name="reporter_contact" value="{{ item.reporter_contact }}">
+                </div>
+                {% if item.status == 'Found' %}
+                <div>
+                    <label>Surrendered to OSA</label>
+                    <div class="osa-checkbox">
+                        <input type="checkbox" id="edit-osa" name="is_surrendered_to_osa" {% if item.is_surrendered_to_osa %}checked{% endif %}>
+                        <label for="edit-osa" style="margin:0;color:#333;font-weight:500;">Item is with OSA</label>
+                    </div>
+                </div>
+                {% endif %}
+                <div class="full-width">
+                    <label for="edit-description">Description</label>
+                    <textarea id="edit-description" name="description" required>{{ item.description }}</textarea>
+                </div>
+                <div class="full-width">
+                    <label>Image</label>
+                    {% if item.image %}
+                    <img src="{{ item.image.url }}" alt="Current image" class="edit-current-img">
+                    <p style="font-size:0.85rem;color:#888;margin-bottom:8px;">Upload a new image to replace the current one, or leave empty to keep it.</p>
+                    {% endif %}
+                    <input type="file" name="image" accept="image/*">
+                </div>
+                <div class="edit-actions">
+                    <button type="submit" class="edit-save-btn">Save Changes</button>
+                    <a href="{% if request.GET.next %}{{ request.GET.next }}{% elif item.status == 'Found' %}{% url 'found_reports_overview' %}{% else %}{% url 'lost_reports_overview' %}{% endif %}" class="edit-cancel-link">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

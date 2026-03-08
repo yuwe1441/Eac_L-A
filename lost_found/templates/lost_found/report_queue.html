@@ -122,6 +122,8 @@
         border: none;
         border-radius: 10px;
         padding: 10px 13px;
+        min-width: 70px;
+        font-size: 0.88rem;
         font-weight: 700;
         cursor: pointer;
         box-shadow: 0 10px 22px rgba(62, 7, 0, 0.08);
@@ -133,6 +135,7 @@
     .mini-action.approve { background: #0d7a48; color: #fff; }
     .mini-action.reject { background: #ffe2d8; color: #8d2300; }
     .mini-action.delete { background: #3d0c0c; color: #fff; }
+    .mini-action.edit { background: #1a6fb5; color: #fff; }
     .overview-detail-link { background: #fff4d0; color: #7d1300; }
     .overview-empty { margin: 0; padding: 22px 16px; text-align: center; color: #6b5648; }
     @media (max-width: 640px) {
@@ -198,6 +201,7 @@
                             <td>
                                 <div class="overview-actions-row">
                                     <a href="{% url 'item_detail' item.id %}" class="overview-detail-link">View</a>
+                                    <a href="{% url 'edit_item' item.id %}?next={{ request.get_full_path|urlencode }}" class="mini-action edit">Edit</a>
                                     {% if item.moderation_status != 'approved' %}
                                     <form method="post" action="{% url 'approve_report' item.id %}">{% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}"><button type="submit" class="mini-action approve">Approve</button></form>
                                     {% endif %}
