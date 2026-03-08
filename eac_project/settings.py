@@ -14,10 +14,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-+%-fqvmz^(jo8zw5tworgth^0xr7c-qdt&5ac%&2urn9!vhi_2')
 
 
-DEBUG = os.environ.get('VERCEL') != '1'
+# DEBUG should be disabled in production. Set DEBUG=1 in Railway if you need it for troubleshooting.
+DEBUG = os.environ.get('DEBUG', '0') == '1'
 
-
-ALLOWED_HOSTS = ['Markahlden.pythonanywhere.com', 'localhost', '127.0.0.1']
+# Allow configuring hosts via ALLOWED_HOSTS env var (comma-separated).
+# Default includes localhost plus the Railway domain used by this project.
+ALLOWED_HOSTS = os.environ.get(
+    'ALLOWED_HOSTS',
+    'localhost,127.0.0.1,eacl-a-production.up.railway.app'
+).split(',')
 
 
 INSTALLED_APPS = [
