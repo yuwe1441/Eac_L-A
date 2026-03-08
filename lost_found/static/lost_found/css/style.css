@@ -1309,23 +1309,37 @@ html, body {
 }
 
 .item-card {
-  background: #fffbe6;
+  background: #ffffff;
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 4px 16px rgba(168,0,0,0.10);
   transition: transform 0.3s ease;
-  border: 2px solid #ffd700;
+  border: 2px solid #a80000;
   text-align: center;
   display: flex;
   flex-direction: column;
+  color: #111;
 }
-.item-card .item-desc, .item-card .item-title, .item-card .item-meta {
+.item-card .item-title {
   color: #a80000 !important;
+  font-size: 1.3rem;
+  font-weight: 800;
+  margin: 0.4em 0 0.25em 0;
+}
+.item-card .item-desc {
+  color: #2e1a1a !important;
   text-align: center !important;
   font-family: 'Orbitron', Arial, sans-serif;
-  font-size: 1.05rem;
+  font-size: 1rem;
   font-weight: 500;
-  margin: 0.2em 0 0.4em 0;
+  margin: 0.25em 0 0.5em 0;
+}
+.item-card .item-meta {
+  color: #5a2d2d !important;
+  font-family: 'Orbitron', Arial, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0.1em 0 0.3em 0;
 }
 
 .card-img {
@@ -1658,11 +1672,7 @@ html, body {
 }
 
 /* --- RECLAIM overrides for item text and search fields --- */
-.item-card .item-desc,
-.item-card .item-title,
-.item-card .item-meta,
 .item-card span,
-.item-card p,
 .item-card div,
 .item-card a,
 .item-card button {
