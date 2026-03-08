@@ -129,10 +129,11 @@ if USE_S3:
     AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME') or None
     AWS_S3_ENDPOINT_URL = os.environ.get('AWS_S3_ENDPOINT_URL') or None
 
-    # Recommended settings for modern S3 providers
+    # Recommended settings for modern S3 providers (including Supabase Storage)
     AWS_DEFAULT_ACL = None
     AWS_QUERYSTRING_AUTH = False
-    AWS_S3_ADDRESSING_STYLE = 'virtual'
+    AWS_S3_SIGNATURE_VERSION = os.environ.get('AWS_S3_SIGNATURE_VERSION', 's3v4')
+    AWS_S3_ADDRESSING_STYLE = os.environ.get('AWS_S3_ADDRESSING_STYLE', 'path')
 
 # --- LOGIN/LOGOUT REDIRECTS ---
 LOGOUT_REDIRECT_URL = 'login'
