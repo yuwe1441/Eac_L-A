@@ -32,7 +32,7 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # Allow CSRF requests originating from the Railway domain (required on newer Django).
 CSRF_TRUSTED_ORIGINS = os.environ.get(
     'CSRF_TRUSTED_ORIGINS',
-    'https://eacl-a-production.up.railway.app'
+    'https://eacl-a-production.up.railway.app,https://*.up.railway.app'
 ).split(',')
 
 # Enable a one-click data reset endpoint (admin only). Set this env var to 1 to enable.
