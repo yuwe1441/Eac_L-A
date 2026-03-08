@@ -20,7 +20,7 @@
     color: #8B0000;
     font-size: 2rem;
     margin-bottom: 10px;
-    font-family: 'Times New Roman', serif;
+    font-family: 'Press Start 2P', monospace;
     font-weight: 800;
     text-align: center;
 }
@@ -54,7 +54,7 @@
     border: 1px solid #ddd;
     border-radius: 6px;
     font-size: 1rem;
-    font-family: inherit;
+    font-family: 'Press Start 2P', monospace;
     transition: all 0.3s ease;
 }
 

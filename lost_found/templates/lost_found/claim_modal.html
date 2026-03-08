@@ -1,0 +1,33 @@
+{% load static %}
+<!-- Claim Item Modal -->
+<div id="claim-modal" class="auth-modal">
+  <div class="auth-modal-content login-only" style="max-width: 400px;">
+    <span class="auth-modal-close" id="claim-modal-close">&times;</span>
+    <div class="auth-modal-logo">
+      <img src="{% static 'lost_found/images/Hlogo.png' %}" alt="EAC Logo" style="height:80px;display:block;margin:0 auto 10px auto;filter:drop-shadow(0 4px 10px #a8000033);">
+    </div>
+    <h2 class="auth-modal-title" style="font-size:1.5rem;">Claim This Item</h2>
+    <div class="auth-modal-subtitle" style="margin-bottom:10px;">Please provide your contact details and a short reason for your claim. An admin will review it before release.</div>
+    <form id="claim-item-form" method="POST" action="{% url 'claim_item' %}" enctype="multipart/form-data">
+      {% csrf_token %}
+      <input type="hidden" id="claim-item-id" name="item_id" value="">
+      <div class="form-group">
+        <label for="claim-name">Your Name</label>
+        <input type="text" id="claim-name" name="name" required placeholder="Enter your name">
+      </div>
+      <div class="form-group">
+        <label for="claim-contact">Contact (Email or Phone)</label>
+        <input type="text" id="claim-contact" name="contact" required placeholder="Enter your email or phone">
+      </div>
+      <div class="form-group">
+        <label for="claim-reason">Reason/Proof</label>
+        <textarea id="claim-reason" name="reason" rows="3" required placeholder="Describe why this item belongs to you." style="width:100%;box-sizing:border-box;background:#fffbe6;border:2.5px solid #ffd700;border-radius:12px;padding:14px 16px;font-size:1.1rem;font-family:'Orbitron',Arial,sans-serif;color:#a80000;outline:none;margin-bottom:8px;margin-top:0;transition:border 0.2s,box-shadow 0.2s;"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="claim-image">Upload Image (optional)</label>
+        <input type="file" id="claim-image" name="image" accept="image/*">
+      </div>
+      <button type="submit" class="auth-btn">SUBMIT CLAIM</button>
+    </form>
+  </div>
+</div>

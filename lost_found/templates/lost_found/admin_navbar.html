@@ -1,0 +1,48 @@
+{% load static %}
+<header class="main-header admin-main-header">
+  <nav class="navbar admin-navbar">
+    <div class="logo-section">
+      <a href="{% url 'admin_dashboard' %}"><img src="{% static 'lost_found/images/reclaim_logo.png' %}" alt="RECLAIM Logo" class="header-logo" style="height:70px; width:auto; cursor:pointer;"></a>
+    </div>
+    <ul class="nav-links admin-nav-links" id="nav-links">
+      <li class="dropdown">
+        <a href="{% url 'lost_reports_overview' %}" class="dropbtn">Lost Item Reports</a>
+      </li>
+      <li class="dropdown">
+        <a href="{% url 'found_reports_overview' %}" class="dropbtn">Found Item Reports</a>
+      </li>
+      <li class="dropdown">
+        <a href="{% url 'claims_overview' %}" class="dropbtn">Claims</a>
+      </li>
+      <li class="admin-logout-item">
+        <form action="{% url 'logout' %}" method="post" class="admin-logout-form">
+          {% csrf_token %}
+          <button type="submit" class="nav-logout-btn">Logout</button>
+        </form>
+      </li>
+    </ul>
+    <div class="hamburger" id="hamburger-menu" aria-label="Open navigation" role="button" tabindex="0">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </nav>
+</header>
+
+<div class="mobile-nav-overlay" id="mobile-nav-overlay">
+  <div class="mobile-nav-header">
+    <img src="{% static 'lost_found/images/reclaim_logo.png' %}" alt="RECLAIM Logo" style="height:56px; width:auto; filter:drop-shadow(0 2px 8px rgba(0,0,0,0.2));">
+    <span class="close-btn" id="close-mobile-nav">&times;</span>
+  </div>
+  <ul class="mobile-nav-links">
+    <li><a href="{% url 'lost_reports_overview' %}">Lost Item Reports</a></li>
+    <li><a href="{% url 'found_reports_overview' %}">Found Item Reports</a></li>
+    <li><a href="{% url 'claims_overview' %}">Claims</a></li>
+    <li>
+      <form action="{% url 'logout' %}" method="post" class="mobile-nav-logout-form">
+        {% csrf_token %}
+        <button type="submit" class="mobile-nav-logout-btn">Logout</button>
+      </form>
+    </li>
+  </ul>
+</div>

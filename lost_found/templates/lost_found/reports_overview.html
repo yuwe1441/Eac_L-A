@@ -1,0 +1,197 @@
+{% extends 'lost_found/base.html' %}
+{% load static %}
+{% block navbar %}
+{% include 'lost_found/admin_navbar.html' with current_nav='lost_reports' %}
+{% endblock %}
+{% block extra_css %}
+<style>
+    .admin-overview-shell {
+        padding: 56px 24px 72px;
+    }
+    .admin-overview-card {
+        max-width: 1180px;
+        margin: 0 auto;
+        background: linear-gradient(180deg, rgba(118, 0, 0, 0.98) 0%, rgba(160, 12, 0, 0.95) 26%, rgba(255, 252, 244, 0.99) 26%, rgba(255, 255, 255, 0.99) 100%);
+        border-radius: 28px;
+        border: 1px solid rgba(255, 215, 0, 0.3);
+        box-shadow: 0 24px 68px rgba(70, 0, 0, 0.3);
+        overflow: hidden;
+    }
+    .admin-overview-hero {
+        padding: 32px 36px 28px;
+        border-bottom: 2px solid rgba(255, 215, 0, 0.88);
+    }
+    .admin-overview-hero p {
+        margin: 0 0 10px;
+        font-size: 0.84rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        color: rgba(255, 236, 178, 0.92);
+    }
+    .admin-overview-hero h2 {
+        margin: 0;
+        font-size: clamp(2rem, 4vw, 3rem);
+        color: #fff;
+        line-height: 1.08;
+    }
+    .admin-overview-body {
+        padding: 34px 36px 38px;
+        background: linear-gradient(180deg, #fffaf2 0%, #fff 100%);
+    }
+    .admin-overview-copy {
+        margin: 0 0 26px;
+        color: #704833;
+        font-size: 1.03rem;
+        line-height: 1.75;
+        max-width: 760px;
+    }
+    .admin-overview-actions {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+    }
+    .admin-overview-actions .hero-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 66px;
+        font-size: 1.08rem;
+        box-shadow: 0 16px 34px rgba(168, 0, 0, 0.12);
+    }
+    .overview-table-wrap {
+        margin-top: 28px;
+        background: #fffefb;
+        border-radius: 22px;
+        border: 1px solid rgba(122, 18, 0, 0.1);
+        box-shadow: 0 18px 46px rgba(62, 7, 0, 0.08);
+        overflow: hidden;
+    }
+    .overview-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .overview-table th,
+    .overview-table td {
+        padding: 16px 14px;
+        border-bottom: 1px solid rgba(122, 18, 0, 0.08);
+        text-align: left;
+        vertical-align: middle;
+        color: #4c2411;
+        line-height: 1.55;
+    }
+    .overview-table th {
+        font-size: 0.82rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #8b4e1a;
+        background: #fff7e7;
+    }
+    .overview-table tbody tr:hover {
+        background: #fff7ef;
+    }
+    .overview-item-title {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 1.08rem;
+        color: #7d1300;
+    }
+    .overview-meta {
+        color: #7b624f;
+        font-size: 0.96rem;
+    }
+    .overview-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 7px 12px;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        font-weight: 700;
+    }
+    .overview-badge.pending { background: #fff0b8; color: #7b4a00; }
+    .overview-badge.approved { background: #ddf8e9; color: #0c5b37; }
+    .overview-badge.rejected { background: #ffe2d8; color: #8d2300; }
+    .filter-active {
+        box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.18), 0 16px 34px rgba(168, 0, 0, 0.12) !important;
+    }
+    .overview-actions-row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .overview-actions-row form { margin: 0; }
+    .mini-action {
+        border: none;
+        border-radius: 10px;
+        padding: 10px 13px;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 10px 22px rgba(62, 7, 0, 0.08);
+    }
+    .mini-action.approve { background: #0d7a48; color: #fff; }
+    .mini-action.reject { background: #ffe2d8; color: #8d2300; }
+    .mini-action.delete { background: #3d0c0c; color: #fff; }
+    .overview-empty { margin: 0; padding: 22px 16px; text-align: center; color: #6b5648; }
+    @media (max-width: 640px) {
+        .admin-overview-shell {
+            padding: 32px 14px 48px;
+        }
+        .admin-overview-hero,
+        .admin-overview-body {
+            padding-left: 18px;
+            padding-right: 18px;
+        }
+        .admin-overview-actions {
+            grid-template-columns: 1fr;
+        }
+        .overview-table-wrap {
+            overflow-x: auto;
+        }
+    }
+</style>
+{% endblock %}
+{% block content %}
+<section class="admin-overview-shell">
+    <div class="admin-overview-card">
+        <div class="admin-overview-hero">
+            <p>Admin Reports</p>
+            <h2>Reports Overview</h2>
+        </div>
+        <div class="admin-overview-body">
+            <p class="admin-overview-copy">Keep lost reports and found reports in separate review queues. That way OSA can moderate each workflow without mixing claimable found items into missing-item follow-up.</p>
+            <div class="admin-overview-actions">
+                <a href="{% url 'lost_reports_overview' %}" class="hero-btn hero-btn-primary">Lost Item Reports</a>
+                <a href="{% url 'found_reports_overview' %}" class="hero-btn hero-btn-outline">Found Item Reports</a>
+                <a href="{% url 'claims_overview' %}" class="hero-btn hero-btn-outline">Claims Overview</a>
+            </div>
+            <div class="overview-table-wrap">
+                <table class="overview-table">
+                    <thead>
+                        <tr>
+                            <th>Queue</th>
+                            <th>Total Reports</th>
+                            <th>Pending Review</th>
+                            <th>Open Queue</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="overview-item-title">Lost Item Reports</span><span class="overview-meta">Missing-item submissions from students, staff, or OSA.</span></td>
+                            <td>{{ lost_total_count }}</td>
+                            <td><span class="overview-badge pending">{{ lost_pending_count }}</span></td>
+                            <td>
+                                <a href="{% url 'lost_reports_overview' %}" class="hero-btn hero-btn-primary">Open Lost Queue</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span class="overview-item-title">Found Item Reports</span><span class="overview-meta">Recovered items, finder details, and OSA handoff status.</span></td>
+                            <td>{{ found_total_count }}</td>
+                            <td><span class="overview-badge pending">{{ found_pending_count }}</span></td>
+                            <td>
+                                <a href="{% url 'found_reports_overview' %}" class="hero-btn hero-btn-outline">Open Found Queue</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

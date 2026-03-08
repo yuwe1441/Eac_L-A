@@ -1,3 +1,5 @@
+# Custom admin login URL for login-required redirects
+LOGIN_URL = '/admin-dashboard-login/'
 import os
 import dj_database_url
 from pathlib import Path
@@ -15,7 +17,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-+%-fqvmz^(jo8zw5tworg
 DEBUG = os.environ.get('VERCEL') != '1'
 
 
-ALLOWED_HOSTS = ['yourusername.pythonanywhere.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['Markahlden.pythonanywhere.com', 'localhost', '127.0.0.1']
 
 
 INSTALLED_APPS = [

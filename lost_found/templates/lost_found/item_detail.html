@@ -1,0 +1,287 @@
+{% extends 'lost_found/base.html' %}
+{% load static %}
+{% block navbar %}
+{% if is_admin_view %}
+{% include 'lost_found/admin_navbar.html' with current_nav='lost_reports' %}
+{% else %}
+{{ block.super }}
+{% endif %}
+{% endblock %}
+{% block extra_css %}
+<style>
+    .item-detail-shell {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 52px 24px 72px;
+    }
+    .item-detail-grid {
+        display: grid;
+        grid-template-columns: minmax(320px, 460px) minmax(0, 1fr);
+        gap: 28px;
+    }
+    .item-visual,
+    .item-panel,
+    .related-panel {
+        background: rgba(255, 255, 255, 0.96);
+        border-radius: 28px;
+        box-shadow: 0 22px 54px rgba(62, 7, 0, 0.12);
+        border: 1px solid rgba(168, 0, 0, 0.08);
+    }
+    .item-visual {
+        overflow: hidden;
+        min-height: 420px;
+        padding: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(180deg, #fffaf3 0%, #f7f0e1 100%);
+    }
+    .item-visual img {
+        width: 100%;
+        height: 100%;
+        max-height: 540px;
+        min-height: 320px;
+        object-fit: contain;
+        display: block;
+        border-radius: 22px;
+        background: #fff;
+        border: 1px solid rgba(168, 0, 0, 0.08);
+        box-shadow: inset 0 0 0 1px rgba(255, 215, 0, 0.2);
+    }
+    .item-panel {
+        padding: 34px 34px 30px;
+    }
+    .item-meta-strip {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 16px;
+    }
+    .item-chip {
+        display: inline-flex;
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: #fff0b8;
+        color: #7d1300;
+        font-weight: 700;
+    }
+    .item-chip.item-chip-status-approved {
+        background: #ddf8e9;
+        color: #0c5b37;
+    }
+    .item-chip.item-chip-status-pending {
+        background: #fff0b8;
+        color: #7b4a00;
+    }
+    .item-chip.item-chip-status-rejected {
+        background: #ffe2d8;
+        color: #8d2300;
+    }
+    .item-panel h1 {
+        margin: 0 0 12px;
+        font-size: clamp(2rem, 4vw, 3rem);
+        line-height: 1.1;
+        color: #6e0e00;
+    }
+    .item-summary {
+        margin: 0 0 8px;
+        color: #6f4732;
+        font-size: 1rem;
+        font-weight: 700;
+    }
+    .item-panel p {
+        color: #5d4234;
+        line-height: 1.75;
+    }
+    .detail-list {
+        display: grid;
+        gap: 14px;
+        margin: 26px 0;
+    }
+    .detail-row {
+        padding: 16px 18px;
+        border-radius: 18px;
+        background: #fff9ee;
+        border: 1px solid rgba(168, 0, 0, 0.08);
+        color: #6a3412;
+        font-weight: 600;
+    }
+    .detail-row strong {
+        display: block;
+        margin-bottom: 6px;
+        color: #7d1300;
+    }
+    .detail-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 24px;
+        align-items: stretch;
+    }
+    .detail-actions .claim-btn {
+        min-height: 52px;
+        padding: 0 22px;
+        border: 2px solid #0f0f0f;
+        border-radius: 12px;
+        background: #fff;
+        color: #5d1300;
+        font-size: 1rem;
+        font-weight: 800;
+        font-family: 'Merriweather', serif;
+        cursor: pointer;
+        transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.2s;
+        box-shadow: 0 10px 24px rgba(62, 7, 0, 0.08);
+    }
+    .detail-actions .claim-btn:hover,
+    .detail-actions .claim-btn:focus {
+        background: #ffd700;
+        color: #8d2300;
+        border-color: #ffd700;
+        transform: translateY(-1px);
+    }
+    .detail-note {
+        padding: 16px 18px;
+        border-radius: 18px;
+        background: linear-gradient(135deg, #fff5cb, #ffe49a);
+        color: #6b2d00;
+        border: 1px solid rgba(168, 0, 0, 0.08);
+    }
+    .detail-note.finder-note {
+        background: linear-gradient(135deg, #fff8df, #fff0bf);
+    }
+    .related-panel {
+        margin-top: 28px;
+        padding: 26px 28px 30px;
+    }
+    .related-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 18px;
+    }
+    .related-card {
+        padding: 18px;
+        border-radius: 20px;
+        background: #fffaf2;
+        border: 1px solid rgba(168, 0, 0, 0.08);
+    }
+    .related-card h3 {
+        margin: 0 0 8px;
+        color: #7d1300;
+    }
+    .related-card a {
+        color: #7d1300;
+        font-weight: 700;
+        text-decoration: none;
+    }
+    @media (max-width: 860px) {
+        .item-detail-grid {
+            grid-template-columns: 1fr;
+        }
+        .item-detail-shell {
+            padding: 34px 16px 52px;
+        }
+        .item-visual {
+            min-height: 280px;
+            padding: 16px;
+        }
+        .item-visual img {
+            min-height: 240px;
+            max-height: 360px;
+        }
+        .item-panel {
+            padding: 24px 22px 24px;
+        }
+        .detail-actions {
+            flex-direction: column;
+        }
+        .detail-actions .claim-btn,
+        .detail-actions .hero-btn {
+            width: 100%;
+            justify-content: center;
+            text-align: center;
+        }
+    }
+</style>
+{% endblock %}
+{% block content %}
+<section class="item-detail-shell">
+    <div class="item-detail-grid">
+        <div class="item-visual">
+            {% if item.image %}
+            <img src="{{ item.image.url }}" alt="{{ item.title }}">
+            {% else %}
+            <img src="{% static 'lost_found/images/Hlogo.png' %}" alt="No image available">
+            {% endif %}
+        </div>
+        <div class="item-panel">
+            <div class="item-meta-strip">
+                <span class="item-chip">{{ item.status }} Item</span>
+                {% if is_admin_view %}
+                <span class="item-chip item-chip-status-{{ item.moderation_status }}">{{ item.moderation_status|title }}</span>
+                {% endif %}
+            </div>
+            <h1>{{ item.title }}</h1>
+            <p class="item-summary">{{ item.get_category_display }}{% if item.location %} | {{ item.location }}{% endif %}</p>
+            <p>{{ item.description }}</p>
+
+            <div class="detail-list">
+                <div class="detail-row">
+                    <strong>Category</strong>
+                    {{ item.get_category_display }}
+                </div>
+                <div class="detail-row">
+                    <strong>Location</strong>
+                    {{ item.location }}
+                </div>
+                <div class="detail-row">
+                    <strong>{{ item.incident_label }}</strong>
+                    {% if item.date_lost %}{{ item.date_lost|date:'M d, Y' }}{% else %}Not specified{% endif %}{% if item.time_lost %} at {{ item.time_lost|time:'h:i A' }}{% endif %}
+                </div>
+                <div class="detail-row">
+                    <strong>Reported By</strong>
+                    {{ item.reporter_display_name }}
+                </div>
+                <div class="detail-row">
+                    <strong>{{ item.contact_label }}</strong>
+                    {{ item.public_contact_display }}
+                </div>
+            </div>
+
+            {% if item.status == 'Found' %}
+            <div class="detail-note {% if not item.is_surrendered_to_osa %}finder-note{% endif %}">
+                {% if item.is_surrendered_to_osa %}
+                Claimants may either submit a request here or visit OSA directly for verification and release.
+                {% else %}
+                This item is still listed with finder contact details. Claimants should submit a request first so OSA can verify ownership and coordinate the handoff.
+                {% endif %}
+            </div>
+            <div class="detail-actions">
+                {% if not user.is_authenticated or not user.is_staff %}
+                <button class="claim-btn" data-item-id="{{ item.id }}">Claim This Item</button>
+                {% endif %}
+                <a href="{% url back_to_url %}{% if not is_admin_view %}#search-section{% endif %}" class="hero-btn hero-btn-outline">Back to Listings</a>
+            </div>
+            {% else %}
+            <div class="detail-actions">
+                <a href="{% url back_to_url %}{% if not is_admin_view %}#search-section{% endif %}" class="hero-btn hero-btn-outline">Back to Listings</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if related_items %}
+    <div class="related-panel">
+        <h2>More {{ item.status|lower }} items</h2>
+        <div class="related-grid">
+            {% for related in related_items %}
+            <div class="related-card">
+                <h3>{{ related.title }}</h3>
+                <p>{{ related.description|truncatewords:16 }}</p>
+                <a href="{% url 'item_detail' related.id %}">View details</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

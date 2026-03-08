@@ -1,0 +1,398 @@
+{% extends 'lost_found/base.html' %}
+{% load static %}
+{% block navbar %}
+{% include 'lost_found/admin_navbar.html' with current_nav='dashboard' %}
+{% endblock %}
+{% block extra_css %}
+<style>
+  .admin-shell {
+    padding: 56px 24px 72px;
+  }
+  .admin-dashboard-pro {
+    width: 100%;
+    max-width: 1120px;
+    margin: 0 auto;
+    background: linear-gradient(180deg, rgba(116, 0, 0, 0.98) 0%, rgba(150, 0, 0, 0.95) 28%, rgba(255, 248, 235, 0.98) 28%, rgba(255, 255, 255, 0.98) 100%);
+    border: 1px solid rgba(255, 215, 0, 0.28);
+    border-radius: 28px;
+    box-shadow: 0 26px 70px rgba(70, 0, 0, 0.34);
+    overflow: hidden;
+  }
+  .admin-hero {
+    padding: 34px 40px 28px;
+    color: #fffdf6;
+    border-bottom: 2px solid rgba(255, 215, 0, 0.85);
+    text-align: left;
+  }
+  .admin-hero-label {
+    margin: 0 0 10px;
+    font-size: 0.84rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255, 236, 178, 0.92);
+  }
+  .admin-hero h1 {
+    margin: 0;
+    font-size: clamp(2.2rem, 4vw, 3.3rem);
+    line-height: 1.05;
+    font-weight: 900;
+    color: #ffffff;
+    text-shadow: 0 10px 24px rgba(0, 0, 0, 0.24);
+  }
+  .admin-hero p {
+    margin: 12px 0 0;
+    max-width: 720px;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: rgba(255, 248, 229, 0.92);
+  }
+  .admin-body {
+    padding: 30px 34px 36px;
+  }
+  .admin-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .admin-alert-pill {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+  }
+  .alert-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 16px;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #7c1200;
+    background: linear-gradient(135deg, #ffeeb3, #ffd24d);
+    box-shadow: 0 10px 24px rgba(168, 0, 0, 0.12);
+  }
+  .admin-all-clear {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 16px;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #0c5b37;
+    background: #ddf8e9;
+  }
+  .admin-actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .admin-actions .hero-btn {
+    min-width: 190px;
+    text-align: center;
+    box-shadow: 0 14px 30px rgba(168, 0, 0, 0.12);
+  }
+  .admin-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    margin-bottom: 26px;
+  }
+  .metric-card {
+    padding: 22px 22px 20px;
+    border-radius: 22px;
+    background: linear-gradient(180deg, #fffdfa 0%, #fff6db 100%);
+    border: 1px solid rgba(255, 215, 0, 0.38);
+    box-shadow: 0 16px 38px rgba(122, 21, 0, 0.09);
+    text-align: center;
+  }
+  .metric-card.metric-approved,
+  .metric-card.metric-completed {
+    background: linear-gradient(180deg, #fffefa 0%, #f5ffe7 100%);
+  }
+  .metric-label {
+    margin-bottom: 12px;
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: #7a2200;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .metric-value {
+    font-size: clamp(2rem, 3vw, 2.8rem);
+    line-height: 1;
+    font-weight: 900;
+    color: #9f1400;
+  }
+  .metric-hint {
+    margin-top: 10px;
+    font-size: 0.92rem;
+    color: #6a4f32;
+  }
+  .admin-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(280px, 0.95fr);
+    gap: 22px;
+  }
+  .panel-card {
+    background: rgba(255, 255, 255, 0.98);
+    border-radius: 24px;
+    border: 1px solid rgba(121, 23, 0, 0.09);
+    box-shadow: 0 16px 44px rgba(62, 7, 0, 0.08);
+    padding: 24px;
+    text-align: center;
+  }
+  .panel-card h3 {
+    margin: 0 0 8px;
+    font-size: 1.35rem;
+    color: #7c1200;
+    font-weight: 800;
+  }
+  .panel-copy {
+    margin: 0 0 18px;
+    color: #6b5648;
+    line-height: 1.6;
+  }
+  .activity-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .activity-table th,
+  .activity-table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid rgba(122, 18, 0, 0.08);
+    text-align: center;
+    vertical-align: middle;
+  }
+  .activity-table th {
+    font-size: 0.82rem;
+    color: #8b4e1a;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .activity-table td {
+    font-size: 0.96rem;
+    color: #43210e;
+  }
+  .activity-table tbody tr:hover {
+    background: #fffaf0;
+  }
+  .activity-title {
+    font-weight: 700;
+    color: #821600;
+  }
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 12px;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+  .status-badge.status-lost {
+    background: #ffe0cf;
+    color: #8d2300;
+  }
+  .status-badge.status-found {
+    background: #e0f7e8;
+    color: #0a6840;
+  }
+  .insight-list {
+    display: grid;
+    gap: 14px;
+  }
+  .insight-item {
+    padding: 16px 18px;
+    border-radius: 18px;
+    background: linear-gradient(180deg, #fffaf0 0%, #fff4d3 100%);
+    border: 1px solid rgba(255, 215, 0, 0.38);
+  }
+  .insight-item strong {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.96rem;
+    color: #7b1700;
+  }
+  .insight-item span {
+    display: block;
+    font-size: 0.94rem;
+    color: #5a4331;
+    line-height: 1.55;
+  }
+  .empty-state {
+    margin: 0;
+    padding: 26px 18px;
+    text-align: center;
+    color: #6a4f32;
+    background: #fffaf0;
+    border-radius: 18px;
+  }
+  @media (max-width: 980px) {
+    .admin-metrics {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .admin-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 640px) {
+    .admin-shell {
+      padding: 30px 14px 48px;
+    }
+    .admin-hero,
+    .admin-body {
+      padding-left: 18px;
+      padding-right: 18px;
+    }
+    .admin-metrics {
+      grid-template-columns: 1fr;
+    }
+    .activity-table thead {
+      display: none;
+    }
+    .activity-table,
+    .activity-table tbody,
+    .activity-table tr,
+    .activity-table td {
+      display: block;
+      width: 100%;
+    }
+    .activity-table tr {
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(122, 18, 0, 0.08);
+    }
+    .activity-table td {
+      padding: 8px 0;
+      border-bottom: none;
+    }
+    .activity-table td::before {
+      content: attr(data-label);
+      display: block;
+      margin-bottom: 4px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #8b4e1a;
+    }
+  }
+</style>
+{% endblock %}
+{% block content %}
+<section class="admin-shell">
+  <div class="admin-dashboard-pro">
+    <div class="admin-hero">
+      <p class="admin-hero-label">Operations Center</p>
+      <h1>Admin Dashboard</h1>
+      <p>Monitor lost and found activity, track pending requests, and act on reports without leaving the dashboard.</p>
+    </div>
+
+    <div class="admin-body">
+      <div class="admin-topbar">
+        {% if pending_reports_count > 0 or pending_claims_count > 0 %}
+          <div class="admin-alert-pill">
+            {% if pending_reports_count > 0 %}
+              <span class="alert-pill">{{ pending_reports_count }} report{{ pending_reports_count|pluralize }} waiting for review</span>
+            {% endif %}
+            {% if pending_claims_count > 0 %}
+              <span class="alert-pill">{{ pending_claims_count }} claim{{ pending_claims_count|pluralize }} pending action</span>
+            {% endif %}
+          </div>
+        {% else %}
+          <div class="admin-all-clear">No pending reports or claims right now.</div>
+        {% endif %}
+
+        <div class="admin-actions">
+          <a href="#" class="hero-btn hero-btn-outline" id="report-lost-btn">Report Lost Item</a>
+          <a href="#" class="hero-btn hero-btn-primary" id="admin-report-found-btn">Report Found Item</a>
+        </div>
+      </div>
+
+      <div class="admin-metrics">
+        <div class="metric-card metric-pending">
+          <div class="metric-label">Pending Reports</div>
+          <div class="metric-value">{{ pending_reports_count }}</div>
+          <div class="metric-hint">Items that still need admin review.</div>
+        </div>
+        <div class="metric-card metric-approved">
+          <div class="metric-label">Approved Reports</div>
+          <div class="metric-value">{{ approved_reports_count }}</div>
+          <div class="metric-hint">Reports already validated and visible.</div>
+        </div>
+        <div class="metric-card metric-pending-claim">
+          <div class="metric-label">Pending Claims</div>
+          <div class="metric-value">{{ pending_claims_count }}</div>
+          <div class="metric-hint">Claim requests awaiting verification.</div>
+        </div>
+        <div class="metric-card metric-completed">
+          <div class="metric-label">Completed Claims</div>
+          <div class="metric-value">{{ completed_claims_count }}</div>
+          <div class="metric-hint">Claims already resolved and closed.</div>
+        </div>
+      </div>
+
+      <div class="admin-grid">
+        <div class="panel-card admin-activity">
+          <h3>Recent Activity</h3>
+          <p class="panel-copy">Latest submissions across the platform so you can spot urgent cases quickly.</p>
+          {% if recent_items %}
+            <table class="activity-table">
+              <thead>
+                <tr>
+                  <th>Type</th>
+                  <th>Title</th>
+                  <th>Reported By</th>
+                  <th>Category</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in recent_items %}
+                <tr>
+                  <td data-label="Type">
+                    <span class="status-badge status-{{ item.status|lower }}">{{ item.status }}</span>
+                  </td>
+                  <td data-label="Title" class="activity-title">{{ item.title }}</td>
+                  <td data-label="Reported By">{% if item.reporter_name %}{{ item.reporter_name }}{% elif item.user %}{{ item.user.username }}{% else %}Anonymous{% endif %}</td>
+                  <td data-label="Category">{{ item.get_category_display }}</td>
+                  <td data-label="Date">{{ item.date_reported|date:'M d, Y h:i A' }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          {% else %}
+            <p class="empty-state">No recent activity yet.</p>
+          {% endif %}
+        </div>
+
+        <aside class="panel-card">
+          <h3>Quick Guidance</h3>
+          <p class="panel-copy">Use these shortcuts to keep the review process consistent and easy to follow.</p>
+          <div class="insight-list">
+            <div class="insight-item">
+              <strong>Start with pending reports</strong>
+              <span>Prioritize new reports so students can search for matching items as early as possible.</span>
+            </div>
+            <div class="insight-item">
+              <strong>Verify claims carefully</strong>
+              <span>Check identifying details before completing a claim to reduce mismatches and repeated requests.</span>
+            </div>
+            <div class="insight-item">
+              <strong>Keep records current</strong>
+              <span>Use the quick actions above whenever an item is newly reported or handed over.</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+</section>
+{% include 'lost_found/admin_report_found_modal.html' %}
+{% endblock %}

@@ -1,0 +1,73 @@
+{% load static %}
+<div id="report-found-modal" class="auth-modal">
+  <div class="auth-modal-content login-only report-form-modal" style="max-width: 620px; padding: 32px 32px 24px 32px;">
+    <span class="auth-modal-close" id="report-found-modal-close">&times;</span>
+    <div class="auth-modal-logo">
+      <img src="{% static 'lost_found/images/Hlogo.png' %}" alt="EAC Logo" style="height:80px;display:block;margin:0 auto 10px auto;filter:drop-shadow(0 4px 10px #a8000033);">
+    </div>
+    <h2 class="auth-modal-title" style="font-size:1.5rem;">Report Found Item</h2>
+    <div class="auth-modal-subtitle report-form-subtitle" style="margin-bottom:18px; grid-column: 1 / -1; text-align:center; width:100%; padding:0; max-width:none;">
+      Share where the item was found and how OSA can reach you. People may also go directly to OSA once the item is verified.
+    </div>
+    <form method="POST" action="{% url 'report_found' %}" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="report-form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; grid-template-areas:
+        'name date'
+        'contact time'
+        'title image'
+        'location location'
+        'desc category'
+        'osa osa';">
+        <div class="form-group" style="margin-bottom: 10px; grid-area: name;">
+          <label for="found-name">Your Name (optional)</label>
+          <input type="text" id="found-name" name="name" placeholder="Leave blank to show as Anonymous" style="width: 100%; box-sizing: border-box;">
+        </div>
+        <div class="form-group" style="margin-bottom: 10px; grid-area: date;">
+          <label for="found-date">Date Found</label>
+          <input type="date" id="found-date" name="date_found" required style="width:100%;padding:8px;border:1.5px solid #ffd700;border-radius:7px;">
+        </div>
+        <div class="form-group" style="margin-bottom: 10px; grid-area: contact;">
+          <label for="found-contact">Contact (Email or Phone)</label>
+          <input type="text" id="found-contact" name="contact" required placeholder="Enter your email or phone" style="width: 100%; box-sizing: border-box;">
+        </div>
+        <div class="form-group" style="margin-bottom: 10px; grid-area: time;">
+          <label for="found-time">Approximate Time</label>
+          <input type="time" id="found-time" name="time_found" required style="width:100%;padding:8px;border:1.5px solid #ffd700;border-radius:7px;">
+        </div>
+        <div class="form-group" style="margin-bottom: 10px; grid-area: title;">
+          <label for="found-title">Item Name/Title</label>
+          <input type="text" id="found-title" name="title" required placeholder="e.g. Blue Umbrella, EAC ID" style="width: 100%; box-sizing: border-box;">
+        </div>
+        <div class="form-group" style="margin-bottom: 10px; grid-area: image;">
+          <label for="found-image">Upload Image (optional)</label>
+          <input type="file" id="found-image" name="image" accept="image/*" style="width: 100%; box-sizing: border-box;">
+        </div>
+        <div class="form-group" style="margin-bottom: 10px; grid-area: location;">
+          <label for="found-location">Where Was It Found?</label>
+          <input type="text" id="found-location" name="location" required placeholder="e.g. Library 2nd Floor, Canteen" style="width: 100%; box-sizing: border-box;">
+        </div>
+        <div class="form-group" style="margin-bottom: 10px; grid-area: desc;">
+          <label for="found-description">Detailed Description</label>
+          <textarea id="found-description" name="description" rows="4" required placeholder="Mention brand, color, stickers, or unique marks..." style="width:100%;box-sizing:border-box;background:#fffbe6;border:2.5px solid #ffd700;border-radius:12px;padding:10px 12px;font-size:1.1rem;font-family:'Orbitron',Arial,sans-serif;color:#a80000;outline:none;margin-bottom:4px;margin-top:0;transition:border 0.2s,box-shadow 0.2s;"></textarea>
+        </div>
+        <div class="form-group" style="margin-bottom: 10px; grid-area: category;">
+          <label for="found-category">Category</label>
+          <select id="found-category" name="category" required style="width:100%;box-sizing:border-box;background:#fffbe6;border:2.5px solid #ffd700;border-radius:12px;padding:12px 14px;font-size:1rem;font-family:'Orbitron',Arial,sans-serif;color:#a80000;outline:none;height:52px;appearance:none;-webkit-appearance:none;-moz-appearance:none;box-shadow:0 0 0 1px rgba(255,215,0,0.08) inset;">
+            <option value="">Select Category</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Documents">Documents</option>
+            <option value="Personal Effects">Personal Belongings</option>
+            <option value="Others">Others</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom: 10px; grid-area: osa; background:#fff6d7; border-radius:14px; padding:14px 16px; border:1px solid rgba(168,0,0,0.12);">
+          <label for="found-osa" style="display:flex; gap:10px; align-items:flex-start; cursor:pointer; line-height:1.55;">
+            <input type="checkbox" id="found-osa" name="is_surrendered_to_osa" style="margin-top:4px;">
+            <span>I already turned this item over to OSA. If approved, the public page should direct claimants to OSA instead of showing my contact information.</span>
+          </label>
+        </div>
+      </div>
+      <button type="submit" class="auth-btn" style="margin-top: 10px;">SUBMIT REPORT</button>
+    </form>
+  </div>
+</div>

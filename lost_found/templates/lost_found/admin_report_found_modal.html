@@ -1,0 +1,66 @@
+{% load static %}
+<div id="admin-report-found-modal" class="auth-modal">
+  <div class="auth-modal-content login-only report-form-modal" style="max-width: 620px; padding: 32px 32px 24px 32px;">
+    <span class="auth-modal-close" id="admin-report-found-modal-close">&times;</span>
+    <div class="auth-modal-logo">
+      <img src="{% static 'lost_found/images/Hlogo.png' %}" alt="EAC Logo" style="height:80px;display:block;margin:0 auto 10px auto;filter:drop-shadow(0 4px 10px #a8000033);">
+    </div>
+    <h2 class="auth-modal-title" style="font-size:1.5rem;">Report Found Item</h2>
+    <div class="auth-modal-subtitle report-form-subtitle" style="margin-bottom:18px; grid-column: 1 / -1; text-align:center; width:100%; padding:0; max-width:none;">
+      Record items that were already received by OSA. Staff-submitted found reports are published immediately and direct claimants to OSA.
+    </div>
+    <form method="POST" action="{% url 'report_found' %}" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="report-form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; grid-template-areas:
+        'name date'
+        'contact time'
+        'title image'
+        'location location'
+        'desc category';">
+        <div class="form-group" style="margin-bottom: 10px; grid-area: name;">
+          <label for="admin-found-name">Turned In By (optional)</label>
+          <input type="text" id="admin-found-name" name="name" placeholder="Student, staff, guard, or finder name" style="width: 100%; box-sizing: border-box;">
+        </div>
+        <div class="form-group" style="margin-bottom: 10px; grid-area: date;">
+          <label for="admin-found-date">Date Received by OSA</label>
+          <input type="date" id="admin-found-date" name="date_found" required style="width:100%;padding:8px;border:1.5px solid #ffd700;border-radius:7px;">
+        </div>
+        <div class="form-group" style="margin-bottom: 10px; grid-area: contact;">
+          <label for="admin-found-contact">Finder Contact or OSA Note (optional)</label>
+          <input type="text" id="admin-found-contact" name="contact" placeholder="Phone, email, or receiving note" style="width: 100%; box-sizing: border-box;">
+        </div>
+        <div class="form-group" style="margin-bottom: 10px; grid-area: time;">
+          <label for="admin-found-time">Time Received</label>
+          <input type="time" id="admin-found-time" name="time_found" required style="width:100%;padding:8px;border:1.5px solid #ffd700;border-radius:7px;">
+        </div>
+        <div class="form-group" style="margin-bottom: 10px; grid-area: title;">
+          <label for="admin-found-title">Item Name/Title</label>
+          <input type="text" id="admin-found-title" name="title" required placeholder="e.g. Student ID, Black Umbrella" style="width: 100%; box-sizing: border-box;">
+        </div>
+        <div class="form-group" style="margin-bottom: 10px; grid-area: image;">
+          <label for="admin-found-image">Upload Image (optional)</label>
+          <input type="file" id="admin-found-image" name="image" accept="image/*" style="width: 100%; box-sizing: border-box;">
+        </div>
+        <div class="form-group" style="margin-bottom: 10px; grid-area: location;">
+          <label for="admin-found-location">Where Was It Found?</label>
+          <input type="text" id="admin-found-location" name="location" required placeholder="e.g. Building 4 hallway, canteen counter" style="width: 100%; box-sizing: border-box;">
+        </div>
+        <div class="form-group" style="margin-bottom: 10px; grid-area: desc;">
+          <label for="admin-found-description">Detailed Description</label>
+          <textarea id="admin-found-description" name="description" rows="4" required placeholder="Add identifying details, current condition, and any intake notes..." style="width:100%;box-sizing:border-box;background:#fffbe6;border:2.5px solid #ffd700;border-radius:12px;padding:10px 12px;font-size:1.1rem;font-family:'Orbitron',Arial,sans-serif;color:#a80000;outline:none;margin-bottom:4px;margin-top:0;transition:border 0.2s,box-shadow 0.2s;"></textarea>
+        </div>
+        <div class="form-group" style="margin-bottom: 10px; grid-area: category;">
+          <label for="admin-found-category">Category</label>
+          <select id="admin-found-category" name="category" required style="width:100%;box-sizing:border-box;background:#fffbe6;border:2.5px solid #ffd700;border-radius:12px;padding:12px 14px;font-size:1rem;font-family:'Orbitron',Arial,sans-serif;color:#a80000;outline:none;height:52px;appearance:none;-webkit-appearance:none;-moz-appearance:none;box-shadow:0 0 0 1px rgba(255,215,0,0.08) inset;">
+            <option value="">Select Category</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Documents">Documents</option>
+            <option value="Personal Effects">Personal Belongings</option>
+            <option value="Others">Others</option>
+          </select>
+        </div>
+      </div>
+      <button type="submit" class="auth-btn" style="margin-top: 10px;">SAVE FOUND REPORT</button>
+    </form>
+  </div>
+</div>

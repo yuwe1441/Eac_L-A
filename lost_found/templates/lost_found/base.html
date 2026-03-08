@@ -4,61 +4,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>EAC Cavite | Lost & Found</title>
+    <!-- Favicon: EAC Logo -->
+    <link rel="icon" type="image/x-icon" href="{% static 'lost_found/images/favicon.ico' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'lost_found/images/favicon.ico' %}">
 
     <link rel="stylesheet" href="{% static 'lost_found/css/style.css' %}">
     <script src="{% static 'lost_found/js/script.js' %}"></script>
 
     {% block extra_css %}{% endblock %}
 </head>
-<body>
+<body{% if user.is_authenticated %} class="user-authenticated"{% endif %}>
+    {% block navbar %}
     <header class="main-header">
         <nav class="navbar">
             <div class="logo-section">
-                <img src="{% static 'lost_found/images/Hlogo.png' %}" alt="EAC Logo" class="header-logo">
-                <div class="logo-text">
-                    <span class="college-name">EAC CAVITE</span>
-                    <span class="sub-college">EMILIO AGUINALDO COLLEGE</span>
-                </div>
-            </div>
-            <ul class="nav-links">
-                <li><a href="{% url 'home' %}">Home</a></li>
-                <li><a href="{% url 'home' %}#search-section">Search</a></li>
-                {% if user.is_authenticated %}
-                <li><a href="{% url 'report_lost' %}">Report Lost Item</a></li>
-                {% endif %}
                 {% if user.is_authenticated and user.is_staff %}
-                <li><a href="{% url 'report_found' %}">Report Found Item</a></li>
-                {% endif %}
-                <li><a href="{% url 'about' %}">About</a></li>
-                
-                <li class="dropdown">
-                    <a href="#" class="dropbtn">
-                        <img src="{% static 'lost_found/images/icon-vector.png' %}" alt="Profile" class="profile-icon">
-                        {% if user.is_authenticated %}
-                            {{ user.username|upper }}
-                        {% else %}
-                            GUEST
-                        {% endif %}
+                    <a href="{% url 'admin_dashboard' %}">
+                        <img src="{% static 'lost_found/images/reclaim_logo.png' %}" alt="RECLAIM Logo" class="header-logo" style="height:70px; width:auto; cursor:pointer;">
                     </a>
-                    <div class="dropdown-content">
-                        {% if user.is_authenticated %}
-                            <form action="{% url 'logout' %}" method="post" style="margin: 0;">
-                                {% csrf_token %}
-                                <button type="submit" class="logout-btn">Logout</button>
-                            </form>
-                        {% else %}
-                            <a href="{% url 'login' %}">Login</a>
-                        {% endif %}
+                {% elif user.is_authenticated %}
+                    <div class="public-brand-lockup">
+                        <a href="{% url 'home' %}">
+                            <img src="{% static 'lost_found/images/reclaim_logo.png' %}" alt="RECLAIM Logo" class="header-logo public-header-logo" style="width:auto; cursor:pointer;">
+                        </a>
+                        <span class="brand-divider" aria-hidden="true"></span>
+                        <div class="eac-brand-mark">
+                            <img src="{% static 'lost_found/images/Hlogo.png' %}" alt="EAC Cavite Logo" class="brand-seal">
+                            <div class="eac-brand-copy">
+                                <span class="eac-brand-title">EAC Cavite</span>
+                                <span class="eac-brand-subtitle">Emilio Aguinaldo College</span>
+                            </div>
+                        </div>
                     </div>
-                </li>
+                {% else %}
+                    <div class="public-brand-lockup">
+                        <a href="#" class="login-logo-trigger">
+                            <img src="{% static 'lost_found/images/reclaim_logo.png' %}" alt="RECLAIM Logo" class="header-logo public-header-logo" style="width:auto; cursor:pointer;">
+                        </a>
+                        <span class="brand-divider" aria-hidden="true"></span>
+                        <div class="eac-brand-mark">
+                            <img src="{% static 'lost_found/images/Hlogo.png' %}" alt="EAC Cavite Logo" class="brand-seal">
+                            <div class="eac-brand-copy">
+                                <span class="eac-brand-title">EAC Cavite</span>
+                                <span class="eac-brand-subtitle">Emilio Aguinaldo College</span>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="hamburger" id="hamburger-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="mobile-nav-overlay" id="mobile-nav-overlay">
+                <div class="mobile-nav-header">
+                    {% if user.is_authenticated and user.is_staff %}
+                        <a href="{% url 'admin_dashboard' %}">
+                            <img src="{% static 'lost_found/images/reclaim_logo.png' %}" alt="RECLAIM Logo" class="header-logo" style="height:40px; width:auto; cursor:pointer;">
+                        </a>
+                    {% elif user.is_authenticated %}
+                        <div class="public-brand-lockup mobile-brand-lockup">
+                            <a href="{% url 'home' %}">
+                                <img src="{% static 'lost_found/images/reclaim_logo.png' %}" alt="RECLAIM Logo" class="header-logo public-mobile-header-logo" style="width:auto; cursor:pointer;">
+                            </a>
+                            <span class="brand-divider mobile-brand-divider" aria-hidden="true"></span>
+                            <div class="eac-brand-mark mobile-eac-brand-mark">
+                                <img src="{% static 'lost_found/images/Hlogo.png' %}" alt="EAC Cavite Logo" class="brand-seal mobile-brand-seal">
+                                <div class="eac-brand-copy mobile-eac-brand-copy">
+                                    <span class="eac-brand-title">EAC Cavite</span>
+                                    <span class="eac-brand-subtitle">Emilio Aguinaldo College</span>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="public-brand-lockup mobile-brand-lockup">
+                            <a href="#" class="login-logo-trigger">
+                                <img src="{% static 'lost_found/images/reclaim_logo.png' %}" alt="RECLAIM Logo" class="header-logo public-mobile-header-logo" style="width:auto; cursor:pointer;">
+                            </a>
+                            <span class="brand-divider mobile-brand-divider" aria-hidden="true"></span>
+                            <div class="eac-brand-mark mobile-eac-brand-mark">
+                                <img src="{% static 'lost_found/images/Hlogo.png' %}" alt="EAC Cavite Logo" class="brand-seal mobile-brand-seal">
+                                <div class="eac-brand-copy mobile-eac-brand-copy">
+                                    <span class="eac-brand-title">EAC Cavite</span>
+                                    <span class="eac-brand-subtitle">Emilio Aguinaldo College</span>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <span class="close-btn" id="close-mobile-nav">&times;</span>
+                </div>
+                <ul class="mobile-nav-links">
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'instructions' %}">Instructions</a></li>
+                    <li><a href="{% url 'about' %}">About</a></li>
+                </ul>
+            </div>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'instructions' %}">Instructions</a></li>
+                <li><a href="{% url 'about' %}">About</a></li>
             </ul>
         </nav>
     </header>
+    {% endblock %}
 
     <main>
+        {% if messages %}
+        <div class="site-message-stack" id="site-message-stack">
+            {% for message in messages %}
+            <div class="site-message-popup {{ message.tags|default:'info' }}">
+                <div class="site-message-title">{{ message }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
         {% block content %}{% endblock %}
     </main>
+    {% include 'lost_found/auth_modal.html' %}
+    {% include 'lost_found/claim_modal.html' %}
+    {% include 'lost_found/report_lost_modal.html' %}
+    {% include 'lost_found/report_found_modal.html' %}
 
     <footer class="main-footer">
         <div class="footer-container">
@@ -78,12 +146,8 @@
                 <hr class="footer-divider">
                 <ul>
                     <li><a href="{% url 'home' %}">Home</a></li>
-                    {% if user.is_authenticated %}
-                    <li><a href="{% url 'report_lost' %}">Report Lost Item</a></li>
-                    {% endif %}
-                    {% if user.is_authenticated and user.is_staff %}
-                    <li><a href="{% url 'report_found' %}">Report Found Item</a></li>
-                    {% endif %}
+                    <li><a href="#" class="report-lost-modal-trigger">Report Lost Item</a></li>
+                    <li><a href="#" class="report-found-modal-trigger">Report Found Item</a></li>
                     <li><a href="{% url 'home' %}#search-section">Search Items</a></li>
                 </ul>
             </div>
@@ -105,5 +169,65 @@
     </footer>
 
     {% block extra_js %}{% endblock %}
+    <style>
+        .site-message-stack {
+            position: fixed;
+            top: 92px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 4000;
+            display: grid;
+            gap: 12px;
+            width: min(92vw, 360px);
+        }
+        .site-message-popup {
+            padding: 18px 20px;
+            border-radius: 18px;
+            text-align: center;
+            background: linear-gradient(135deg, #fff0a8, #ffd84d);
+            color: #7a1200;
+            border: 1px solid rgba(168, 0, 0, 0.18);
+            box-shadow: 0 18px 42px rgba(53, 0, 0, 0.2);
+            animation: popup-slide-in 0.24s ease-out;
+        }
+        .site-message-popup.info {
+            background: linear-gradient(135deg, #fff4d4, #ffe9a1);
+        }
+        .site-message-popup.error {
+            background: linear-gradient(135deg, #ffd7d0, #ffb6a9);
+            color: #7a1200;
+        }
+        .site-message-title {
+            font-size: 1.02rem;
+            font-weight: 800;
+            letter-spacing: 0.03em;
+        }
+        @keyframes popup-slide-in {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var messageStack = document.getElementById('site-message-stack');
+            if (messageStack) {
+                setTimeout(function() {
+                    messageStack.style.opacity = '0';
+                    messageStack.style.transition = 'opacity 0.25s ease';
+                    setTimeout(function() {
+                        if (messageStack.parentNode) {
+                            messageStack.parentNode.removeChild(messageStack);
+                        }
+                    }, 260);
+                }, 2200);
+            }
+        });
+    </script>
 </body>
 </html>
