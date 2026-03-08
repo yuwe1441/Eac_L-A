@@ -1,12 +1,9 @@
 {% extends 'lost_found/base.html' %} {% load static %} {% block content %}
 <section class="hero-bone">
   <div class="hero-text">
-    <h1>
-      EAC CAVITE <br />
-      <span>LOST & FOUND</span>
-    </h1>
-    <p>Retrieve What's Lost, Return What's Found.</p>
-    <div class="hero-actions" style="margin-top: 24px; display: flex; justify-content: center; gap: 18px;">
+    <img src="{% static 'lost_found/images/reclaim-logo.png' %}" alt="ReClaim" style="height: 320px; width: auto; display: block; margin: 0 auto -70px; filter: drop-shadow(0 4px 16px rgba(0,0,0,0.4));">
+    <p style="margin: 0 0 24px; font-size: 1.6rem; font-weight: 600;">Retrieve What's Lost, Return What's Found.</p>
+    <div class="hero-actions" style="margin-top: 0; display: flex; justify-content: center; gap: 18px;">
       <a href="#" class="hero-btn hero-btn-primary" id="report-lost-btn">Report Lost Item</a>
       <a href="#" class="hero-btn hero-btn-outline report-found-modal-trigger" id="report-found-btn">Report Found Item</a>
     </div>

@@ -25,31 +25,23 @@
                         <img src="{% static 'lost_found/images/reclaim_logo.png' %}" alt="RECLAIM Logo" class="header-logo" style="height:70px; width:auto; cursor:pointer;">
                     </a>
                 {% elif user.is_authenticated %}
-                    <div class="public-brand-lockup">
-                        <a href="{% url 'home' %}">
-                            <img src="{% static 'lost_found/images/reclaim_logo.png' %}" alt="RECLAIM Logo" class="header-logo public-header-logo" style="width:auto; cursor:pointer;">
+                    <div class="public-brand-lockup" style="display:flex;align-items:center;gap:10px;">
+                        <a href="{% url 'home' %}" style="display:flex;align-items:center;line-height:0;">
+                            <img src="{% static 'lost_found/images/eac_shield.png' %}" alt="EAC Cavite Logo" class="brand-seal" style="cursor:pointer;width:60px;height:60px;">
                         </a>
-                        <span class="brand-divider" aria-hidden="true"></span>
-                        <div class="eac-brand-mark">
-                            <img src="{% static 'lost_found/images/Hlogo.png' %}" alt="EAC Cavite Logo" class="brand-seal">
-                            <div class="eac-brand-copy">
-                                <span class="eac-brand-title">EAC Cavite</span>
-                                <span class="eac-brand-subtitle">Emilio Aguinaldo College</span>
-                            </div>
+                        <div class="eac-brand-copy" style="display:flex;flex-direction:column;justify-content:center;line-height:1.15;">
+                            <span class="eac-brand-title">EAC Cavite</span>
+                            <span class="eac-brand-subtitle">Emilio Aguinaldo College</span>
                         </div>
                     </div>
                 {% else %}
-                    <div class="public-brand-lockup">
-                        <a href="#" class="login-logo-trigger">
-                            <img src="{% static 'lost_found/images/reclaim_logo.png' %}" alt="RECLAIM Logo" class="header-logo public-header-logo" style="width:auto; cursor:pointer;">
+                    <div class="public-brand-lockup" style="display:flex;align-items:center;gap:10px;">
+                        <a href="#" class="login-logo-trigger" style="display:flex;align-items:center;line-height:0;">
+                            <img src="{% static 'lost_found/images/eac_shield.png' %}" alt="EAC Cavite Logo" class="brand-seal" style="cursor:pointer;width:60px;height:60px;">
                         </a>
-                        <span class="brand-divider" aria-hidden="true"></span>
-                        <div class="eac-brand-mark">
-                            <img src="{% static 'lost_found/images/Hlogo.png' %}" alt="EAC Cavite Logo" class="brand-seal">
-                            <div class="eac-brand-copy">
-                                <span class="eac-brand-title">EAC Cavite</span>
-                                <span class="eac-brand-subtitle">Emilio Aguinaldo College</span>
-                            </div>
+                        <div class="eac-brand-copy" style="display:flex;flex-direction:column;justify-content:center;line-height:1.15;">
+                            <span class="eac-brand-title">EAC Cavite</span>
+                            <span class="eac-brand-subtitle">Emilio Aguinaldo College</span>
                         </div>
                     </div>
                 {% endif %}
@@ -68,29 +60,21 @@
                     {% elif user.is_authenticated %}
                         <div class="public-brand-lockup mobile-brand-lockup">
                             <a href="{% url 'home' %}">
-                                <img src="{% static 'lost_found/images/reclaim_logo.png' %}" alt="RECLAIM Logo" class="header-logo public-mobile-header-logo" style="width:auto; cursor:pointer;">
+                                <img src="{% static 'lost_found/images/eac_shield.png' %}" alt="EAC Cavite Logo" class="brand-seal mobile-brand-seal" style="cursor:pointer;">
                             </a>
-                            <span class="brand-divider mobile-brand-divider" aria-hidden="true"></span>
-                            <div class="eac-brand-mark mobile-eac-brand-mark">
-                                <img src="{% static 'lost_found/images/Hlogo.png' %}" alt="EAC Cavite Logo" class="brand-seal mobile-brand-seal">
-                                <div class="eac-brand-copy mobile-eac-brand-copy">
-                                    <span class="eac-brand-title">EAC Cavite</span>
-                                    <span class="eac-brand-subtitle">Emilio Aguinaldo College</span>
-                                </div>
+                            <div class="eac-brand-copy mobile-eac-brand-copy">
+                                <span class="eac-brand-title">EAC Cavite</span>
+                                <span class="eac-brand-subtitle">Emilio Aguinaldo College</span>
                             </div>
                         </div>
                     {% else %}
                         <div class="public-brand-lockup mobile-brand-lockup">
                             <a href="#" class="login-logo-trigger">
-                                <img src="{% static 'lost_found/images/reclaim_logo.png' %}" alt="RECLAIM Logo" class="header-logo public-mobile-header-logo" style="width:auto; cursor:pointer;">
+                                <img src="{% static 'lost_found/images/eac_shield.png' %}" alt="EAC Cavite Logo" class="brand-seal mobile-brand-seal" style="cursor:pointer;">
                             </a>
-                            <span class="brand-divider mobile-brand-divider" aria-hidden="true"></span>
-                            <div class="eac-brand-mark mobile-eac-brand-mark">
-                                <img src="{% static 'lost_found/images/Hlogo.png' %}" alt="EAC Cavite Logo" class="brand-seal mobile-brand-seal">
-                                <div class="eac-brand-copy mobile-eac-brand-copy">
-                                    <span class="eac-brand-title">EAC Cavite</span>
-                                    <span class="eac-brand-subtitle">Emilio Aguinaldo College</span>
-                                </div>
+                            <div class="eac-brand-copy mobile-eac-brand-copy">
+                                <span class="eac-brand-title">EAC Cavite</span>
+                                <span class="eac-brand-subtitle">Emilio Aguinaldo College</span>
                             </div>
                         </div>
                     {% endif %}
