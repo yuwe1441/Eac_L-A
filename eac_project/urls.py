@@ -8,5 +8,6 @@ urlpatterns = [
     path('', include('lost_found.urls')), # Dito niya tinatawag yung app mo
 ] 
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# Serve uploaded media files even in production.
+# Railway provides a writable filesystem at runtime, so this makes uploaded images visible.
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
