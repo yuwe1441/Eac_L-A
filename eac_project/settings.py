@@ -24,6 +24,16 @@ ALLOWED_HOSTS = os.environ.get(
     'localhost,127.0.0.1,eacl-a-production.up.railway.app'
 ).split(',')
 
+# When running behind a proxy (like Railway's router), Django needs to know
+# which secure headers to trust. This ensures request.is_secure() is accurate.
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Allow CSRF requests originating from the Railway domain (required on newer Django).
+CSRF_TRUSTED_ORIGINS = os.environ.get(
+    'CSRF_TRUSTED_ORIGINS',
+    'https://eacl-a-production.up.railway.app'
+).split(',')
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
